@@ -14,7 +14,7 @@ from moo_viewer.plots import bars, generation, pareto
 
 
 def _warn_empty(name: str) -> None:
-    st.warning(f"Could not load `{name}` from any run folder. Check that the file exists.")
+    st.warning(f"Could not load `{name}` from any run folder. Check the file exists.")
 
 
 def render_pareto(path: str, case: str, normalize: bool) -> None:
@@ -51,23 +51,26 @@ def render_curtailment(path: str, case: str) -> None:
 
 
 def render_generation_hourly(path: str, case: str, carrier: str, cap_filter: str) -> None:
-    df = data.load_generation(path, case)
+    df   = data.load_generation(path, case)
+    sink = data.load_sink(path, case)
     if df.empty:
         _warn_empty("flow_out.csv")
         return
     if cap_filter != "All":
-        df = df[df["cap"] == float(cap_filter)]
+        df   = df[df["cap"]   == float(cap_filter)]
+        sink = sink[sink["cap"] == float(cap_filter)] if not sink.empty else sink
     with st.spinner("Rendering hourly chart…"):
-        fig = generation.build_hourly(df, carrier)
+        fig = generation.build_hourly(df, carrier, sink=sink)
     st.plotly_chart(fig, use_container_width=True)
 
 
 def render_generation_summed(path: str, case: str, carrier: str) -> None:
-    df = data.load_generation(path, case)
+    df   = data.load_generation(path, case)
+    sink = data.load_sink(path, case)
     if df.empty:
         _warn_empty("flow_out.csv")
         return
-    fig = generation.build_summed(df, carrier)
+    fig = generation.build_summed(df, carrier, sink=sink)
     st.plotly_chart(fig, use_container_width=True)
     with st.expander("Raw data"):
         agg = (
