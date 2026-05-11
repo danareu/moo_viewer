@@ -88,11 +88,7 @@ def render() -> dict:
         cap_filter = "All"
         if selected_plot in ("Power Generation (Hourly)", "Heat Generation (Hourly)"):
             st.info("Hourly plots can be large — filter by cap to speed up rendering.")
-            cap_options = ["All"] + (
-                [str(int(r["cap"])) for r in sorted(runs, key=lambda x: x["cap"])]
-                if runs
-                else []
-            )
+            cap_options = ["All"] + sorted({str(int(r["cap"])) for r in runs})
             cap_filter = st.selectbox("Filter by emission cap", cap_options)
 
         st.markdown("---")
