@@ -73,20 +73,6 @@ def build_hourly(
         horizontal_spacing=0.04,
     )
 
-    # ── per-row cap header annotations ──────────────────────────────────────
-    # cap_annotations = []
-    # for row_idx, cap in enumerate(caps):
-    #     y_paper = 1.0 - row_idx * (1.0 / n_rows) + 0.01
-    #     cap_annotations.append(dict(
-    #         text=f"<b>Emission cap {int(cap)} %</b>",
-    #         x=0.5, y=y_paper,
-    #         xref="paper", yref="paper",
-    #         xanchor="center", yanchor="bottom",
-    #         showarrow=False,
-    #         font=dict(size=14),
-    #         bgcolor="rgba(240,240,240,0.6)",
-    #         borderpad=3,
-    #     ))
 
     # ── traces ───────────────────────────────────────────────────────────────
     shown: set[str] = set()
@@ -114,7 +100,6 @@ def build_hourly(
                     ),
                     row=row, col=col,
                 )
-        #fig.update_yaxes(title_text="Output", row=row, col=1)
         fig.update_yaxes(title_text=f"Cap {int(cap)} %", row=row, col=1)
 
     fig.update_layout(
