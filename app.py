@@ -46,3 +46,6 @@ elif plot in ("Power Generation (Hourly)", "Heat Generation (Hourly)"):
 elif plot in ("Power Generation (Yearly)", "Heat Generation (Yearly)"):
     carrier = "Power" if "Power" in plot else "Heat"
     views.render_generation_summed(path, case, carrier)
+
+elif plot == "Emissions":
+    views.render_emissions(path, case)

@@ -79,3 +79,14 @@ def render_generation_summed(path: str, case: str, carrier: str) -> None:
             .sum()
         )
         st.dataframe(agg)
+
+
+def render_emissions(path: str, case: str) -> None:
+    df = data.load_emissions(path, case)
+    if df.empty:
+        _warn_empty("emissions_strategic.csv")
+        return
+    fig = bars.build_emissions(df)
+    st.plotly_chart(fig, use_container_width=True)
+    with st.expander("Raw data"):
+        st.dataframe(df)

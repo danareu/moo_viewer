@@ -168,3 +168,30 @@ def load_sink(path: str, case: str) -> pd.DataFrame:
     tech_sums  = combined.groupby("techs")["values"].sum()
     active     = tech_sums[tech_sums != 0].index
     return combined[combined["techs"].isin(active)].reset_index(drop=True)
+
+
+@st.cache_data(show_spinner="Loading emissions data…")
+def load_emissions(path: str, case: str) -> pd.DataFrame:
+    runs = discover_runs(path, case)
+    dfs: list[pd.DataFrame] = []
+
+    for r in runs:
+        df = _csv(path, r["folder"], "emissions_node", usecols=["x1", "x3", "y"])
+        if df is None:
+            continue
+        df = df.rename(columns={"x1": "techs", "x3": "carrier", "y": "values"})
+        df = df[df["carrier"].str.upper() == "CO2"]
+        if df.empty:
+            continue
+        agg = df.groupby("techs", as_index=False)["values"].sum()
+        agg["rho"] = r["rho"]
+        agg["cap"] = r["cap"]
+        dfs.append(agg)
+
+    if not dfs:
+        return pd.DataFrame()
+
+    combined = pd.concat(dfs, ignore_index=True)
+    tech_sums = combined.groupby("techs")["values"].sum()
+    active = tech_sums[tech_sums != 0].index
+    return combined[combined["techs"].isin(active)].reset_index(drop=True)

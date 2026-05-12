@@ -34,6 +34,7 @@ PLOT_OPTIONS: list[str] = [
     "Heat Generation (Hourly)",
     "Power Generation (Yearly)",
     "Heat Generation (Yearly)",
+    "Emissions",
 ]
 
 # Normalisation constant used in ParetoFront notebook

@@ -64,3 +64,9 @@ def build_curtailment(df: pd.DataFrame) -> go.Figure:
     if df.empty:
         return go.Figure()
     return _stacked_bars(df, "Curtailment (GWh)")
+
+
+def build_emissions(df: pd.DataFrame) -> go.Figure:
+    if df.empty:
+        return go.Figure()
+    return _stacked_bars(df, "CO2 Emissions")
