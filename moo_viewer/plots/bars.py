@@ -50,7 +50,7 @@ def _stacked_bars(result: pd.DataFrame, title_prefix: str) -> go.Figure:
         legend_title="Technology",
         margin=dict(t=60),
     )
-    fig.update_xaxes(tickmode="linear", tick0=0, dtick=0.1, title_text="ρ")
+    fig.update_xaxes(tickmode="linear", tick0=0, dtick=0.1, title_text="ρ", range=[-0.1,1.1])
     return fig
 
 
